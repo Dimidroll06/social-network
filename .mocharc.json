@@ -1,0 +1,10 @@
+{
+    "colors": true,
+    "exit": true,
+    "timeout": 5000,
+    "parallel": false,
+    "require": [
+        "should"
+    ],
+    "spec": ["./test/lifecycle.js", "./test/controllers/**/*.js"]
+}
