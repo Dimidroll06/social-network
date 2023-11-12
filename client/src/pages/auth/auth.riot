@@ -1,0 +1,60 @@
+<auth class="flex items-center justify-center">
+    <div class="auth-container flex ba br4 ">
+        <div class="auth-info br w5">
+        </div>
+        <div class="auth-form ph4 pv5">
+            <div is={state.registration?"register":"login"}></div>
+            <button onclick={changeAuthState} class=" -70 bw1 ba w5 b--dark-green white-70">
+                {state.registration?"Хотите войти?":"Хотите зарегестрироваться?"}
+            </button>
+        </div>
+    </div>
+
+    <script>
+    import login from './login.riot'
+    import register from './register.riot'
+    import { router } from '@riotjs/route'
+
+    export default {
+        components: {
+            login,
+            register
+        },
+
+        state: {
+            registration: true
+        },
+
+        onBeforeMount() {
+            if(window.UserController.isAuthorized) router.push('/');
+        },
+
+        changeAuthState() {
+            this.update({
+                registration: !this.state.registration
+            })
+        }
+    }
+    </script>
+
+    <style>
+        :host {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .auth-container {
+            width: min(800px, 80vw);
+            height: min(600px, 80vh);
+            align-content: stretch;
+        }
+
+        .auth-container>*{
+            height: 100%;
+        }
+
+        .auth-info {
+            width: 35%;
+        }
+    </style>
+</auth>

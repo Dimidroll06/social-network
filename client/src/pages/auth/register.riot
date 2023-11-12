@@ -1,0 +1,78 @@
+<register>
+    <h1>Регистрация</h1>
+    <form onsubmit={ register }>
+        <div class="mt2">
+            <label class="db white-70">Никнейм</label>
+            <input 
+                class="pa2 input-reset bg-transparent white-70 w5 ba" 
+                type="text"
+                onkeyup={ editUsername }
+                value={ state.username } />
+        </div>
+        <div class="mt2">
+            <label class="db white-70">Пароль</label>
+            <input 
+                class="pa2 input-reset bg-transparent white-70 w5 ba" 
+                type="password" 
+                onkeyup={ editPassword }
+                value={ state.password } />
+        </div>
+        <div class="mt2">
+            <label class="db white-70">Повторите пароль</label>
+            <input 
+                class="pa2 input-reset bg-transparent white-70 w5 ba" 
+                type="password" 
+                onkeyup={ editRetypePassword }
+                value={ state.repeat_password } />
+        </div>
+
+        <p id="error_message" class="f6 lh-copy red"></p>
+
+        <button class="mt3 bg-dark-green white bn w5">Зарегестрироваться</button>
+    </form>
+
+    <script>
+        import { router } from '@riotjs/route'
+
+        export default {
+            onBeforeMount() {
+                this.state = {
+                    username: '',
+                    password: '',
+                    repeat_password: ''
+                }
+            },
+
+            editUsername(e) {
+                this.update({
+                    username: e.target.value
+                });
+            },
+
+            editPassword(e) {
+                this.update({
+                    password: e.target.value
+                });
+            },
+
+            editRetypePassword(e) {
+                this.update({
+                    repeat_password: e.target.value
+                });
+            },
+
+            async register(e) {
+                e.preventDefault();
+                const data = await window.UserController.register(this.state.username, this.state.password, this.state.repeat_password);
+                
+                if (data.status !== 201) {
+                    return this.$('#error_message').innerText = data.error.message;
+                }
+                await window.UserController.login(this.state.username, this.state.password);
+
+                router.push('/');
+
+            }
+        }
+    </script>
+</register>
