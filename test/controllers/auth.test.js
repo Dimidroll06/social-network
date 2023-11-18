@@ -1,12 +1,7 @@
-const { axios } = require('../helpers');
+const { axios, testUser } = require('../helpers'); 
 const User = require('../../models/User');
 
-describe('Auth', () =>{ 
-    const testUser = {
-        username: 'Potato_228',
-        password: 'strongpassword',
-        repeat_password: 'strongpassword'
-    };
+describe('Auth', () =>{
     
     describe('/api/auth/register', () => {
         afterEach(async () => {
@@ -56,7 +51,7 @@ describe('Auth', () =>{
             res.data.data.token.should.be.startWith('Bearer ');
         });
 
-        it('Login undefinded user', async () => {
+        it('Login undefined user', async () => {
             const res = await axios.post('/auth/login', {
                 username: 'Potato',
                 password: testUser.password
