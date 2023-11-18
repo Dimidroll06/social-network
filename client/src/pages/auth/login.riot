@@ -50,7 +50,7 @@
             async login(e) {
                 e.preventDefault();
 
-                const data = await window.UserController.login(this.state.username, this.state.password);
+                const data = await AuthController.login(this.state.username, this.state.password);
                 if (data.status !== 200) {
                     return this.$('#error_message').innerText = data.error.message;
                 }

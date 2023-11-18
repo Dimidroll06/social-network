@@ -26,7 +26,7 @@
         },
 
         onBeforeMount() {
-            if(window.UserController.isAuthorized) router.push('/');
+            if(window.ApiController.isAuthorized) router.push('/');
         },
 
         changeAuthState() {

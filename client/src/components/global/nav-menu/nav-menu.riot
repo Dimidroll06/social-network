@@ -7,8 +7,8 @@
             </a>
         </div>
         <div class="dtc v-mid tr pa2">
-            <a if={!window.UserController.isAuthorized} class="f6 link fw4 no-underline b--dark-green white hover-dark-green dib ml2 pv2 ph3 ba" href="/auth" >Sign Up</a> 
-            <a if={window.UserController.isAuthorized} class="link no-underline dib ml2 pv2 ph3" href="/profile">
+            <a if={!window.ApiController.isAuthorized} class="f6 link fw4 no-underline b--dark-green white hover-dark-green dib ml2 pv2 ph3 ba" href="/auth" >Sign Up</a> 
+            <a if={window.ApiController.isAuthorized} class="link no-underline dib ml2 pv2 ph3" href="/profile">
                 <img
                     src="http://tachyons.io/img/logo.jpg"
                     class="br-100 h2 w2 dib">

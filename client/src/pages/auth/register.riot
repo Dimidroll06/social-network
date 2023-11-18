@@ -63,12 +63,12 @@
 
             async register(e) {
                 e.preventDefault();
-                const data = await window.UserController.register(this.state.username, this.state.password, this.state.repeat_password);
+                const data = await window.AuthController.register(this.state.username, this.state.password, this.state.repeat_password);
                 
                 if (data.status !== 201) {
                     return this.$('#error_message').innerText = data.error.message;
                 }
-                await window.UserController.login(this.state.username, this.state.password);
+                await AuthController.login(this.state.username, this.state.password);
 
                 router.push('/');
 
