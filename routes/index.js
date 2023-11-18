@@ -11,7 +11,7 @@ r.use((req, res) => {
     res.status(404).json({
         status: 404,
         error: {
-            message: 'Method undefinded!'
+            message: 'Method undefined!'
         }
     });
 })
