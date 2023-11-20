@@ -305,7 +305,7 @@ module.exports.getUser = async (req, res) => {
             profilePicture: user.profilePicture,
             link: user.link,
             createdDate: user.createdDate,
-            isMe: req.user.id === user._id
+            isMe: req.user.id == user._id
         }
     })
 }
