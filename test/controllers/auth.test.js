@@ -1,5 +1,7 @@
 const { axios, testUser } = require('../helpers'); 
 const User = require('../../models/User');
+const Token = require('../../models/Token');
+const { default: mongoose } = require('mongoose');
 
 describe('Auth', () =>{
     
@@ -39,16 +41,28 @@ describe('Auth', () =>{
         before(async () => {
             await axios.post('/auth/register', testUser);
         });
+        
+        afterEach(async () => {
+            await Token.find({}).deleteMany();
+        });
 
         after(async () => {
             await User.find({}).deleteMany();
-        })
+        });
 
         it('Login user', async () => {
-            const res = await axios.post('/auth/login', testUser);
+            const res = await axios.post('/auth/login', {
+                username: testUser.username,
+                password: testUser.password
+            });
             
             res.status.should.be.eql(200);
             res.data.data.token.should.be.startWith('Bearer ');
+            
+            const user = await User.findOne({ username: testUser.username });
+            const token = await Token.findOne({ user: user });
+            
+            token.token.should.be.a.String();
         });
 
         it('Login undefined user', async () => {
