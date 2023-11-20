@@ -169,12 +169,12 @@ module.exports.login = async (req, res) => {
 
     // генерация refresh токена
     const refresh_token = jwt.sign({ id: user._id }, secret.refresh, { expiresIn: expire.refresh_token });
-    req.cookie('refresh_token', refresh_token, { maxAge: expire.cookie, httpOnly: true });
+    res.cookie('refresh_token', refresh_token, { maxAge: expire.cookie, httpOnly: true });
     
     await Token.create({
-        user,
+        user: user._id,
         token: refresh_token
-    });
+    }).catch((err) => console.error(err));
     
     // генерация access токена
     const access_token = jwt.sign({ id: user._id }, secret.access, { expiresIn: expire.access_token });
