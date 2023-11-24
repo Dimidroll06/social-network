@@ -8,6 +8,7 @@ const { uuid } = require('uuidv4');
 const Jimp = require('jimp');
 const fs = require('fs');
 const Token = require('../models/Token');
+const { default: mongoose } = require('mongoose');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -307,5 +308,54 @@ module.exports.getUser = async (req, res) => {
             createdDate: user.createdDate,
             isMe: req.user.id == user._id
         }
+    })
+}
+
+module.exports.getUsers = (req, res) => {
+    const { limit=10, lastId, skip=0 } = req.params;
+    let query;
+
+    if ( lastId ) {
+        query = [
+            {
+                $match: {
+                    _id: {
+                        $lt: mongoose.Types.ObjectId(lastId)
+                    }
+                }
+            },
+            { $sort: { createdDate: -1 } },
+            { $limit: limit },
+            {
+                $project: {
+                    username: 1,
+                    profilePicture: 1,
+                    link: 1
+                }
+            }
+        ]
+    } else {
+        query = [
+            { $sort: { createdDate: -1 } },
+            { $skip: skip },
+            { $limit: limit }
+        ]
+    }
+
+    User.aggregate(query).then((users) => {
+        return res.status(200).json({
+            status: 200,
+            data: {
+                users
+            }
+        });
+    }).catch((err) => {
+        console.error(err);
+        return res.status(500).json({
+            status: 500,
+            error: {
+                message: 'Something went wrong'
+            }
+        })
     })
 }
