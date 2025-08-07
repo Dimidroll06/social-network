@@ -4,6 +4,7 @@ import * as cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
 
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
@@ -13,6 +14,11 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const cookieSecret = configService.get<string>('COOKIE_SECRET', 'secret');
 
+  app.use(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   app.use(cookieParser.default(cookieSecret));
 
   await app.listen(process.env.PORT ?? 3000);
