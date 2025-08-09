@@ -14,7 +14,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const cookieSecret = configService.get<string>('COOKIE_SECRET', 'secret');
 
-  app.use(
+  app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
     }),
