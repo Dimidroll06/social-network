@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { entities } from '../models/entities';
 
 export const databaseConfig = (
   configService: ConfigService,
@@ -8,11 +9,15 @@ export const databaseConfig = (
     'DATABASE_TYPE',
   );
 
+  console.log(entities);
+
   if (databaseType === 'sqlite') {
     return {
       type: 'sqlite',
       database: configService.get<string>('SQLITE_PATH'),
-      autoLoadEntities: true,
+      logging: configService.get<boolean>('DB_LOGGING', true),
+      entities,
+      synchronize: true,
     };
   } else if (databaseType === 'postgres') {
     return {
@@ -22,7 +27,9 @@ export const databaseConfig = (
       username: configService.get<string>('POSTGRES_USERNAME'),
       password: configService.get<string>('POSTGRES_PASSWORD'),
       database: configService.get<string>('POSTGRES_DATABASE'),
-      autoLoadEntities: true,
+      logging: configService.get<boolean>('DB_LOGGING', true),
+      entities,
+      synchronize: true,
     };
   }
 
