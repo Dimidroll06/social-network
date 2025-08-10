@@ -7,11 +7,15 @@ import {
   Req,
   UnauthorizedException,
   Res,
+  Body,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
 import type { RequestWithUser } from 'src/types/requset-with-user.type';
+import { CreateUserDto } from 'src/users/dto/user-create.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -36,6 +40,15 @@ export class AuthController {
     });
 
     return { accessToken };
+  }
+
+  @Post('register')
+  @HttpCode(HttpStatus.CREATED)
+  async register(@Body() user: CreateUserDto) {
+    await this.authService.register(user);
+    return {
+      message: 'User registered successfully. Please log in to continue.',
+    };
   }
 
   @Post('refresh')

@@ -1,6 +1,7 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { CreateUserDto } from 'src/users/dto/user-create.dto';
 import { UsersService } from 'src/users/users.service';
 import { TokensInterface } from './dto/tokens-interface';
 import { TokensPayload } from './dto/tokens-payload';
@@ -31,6 +32,15 @@ export class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  async register(user: CreateUserDto): Promise<void> {
+    const existingUser = await this.userService.getUserByEmail(user.email);
+    if (existingUser) {
+      throw new UnauthorizedException('User with this email already exists');
+    }
+
+    await this.userService.createUser(user);
   }
 
   async refresh(refreshToken: string) {
