@@ -1,29 +1,28 @@
-import { Post } from './post.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
+  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
-export class User {
+export class Post {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column()
-  username: string;
+  message: string;
+
+  @ManyToOne<User>(() => User, (user) => user.posts)
+  @JoinColumn({ name: 'authorId' })
+  author: User;
 
   @Column()
-  email: string;
-
-  @Column()
-  password: string;
-
-  @OneToMany<Post>(() => Post, (post) => post.author, { cascade: true })
-  posts: Post[];
+  authorId: number;
 
   @CreateDateColumn()
   createdAt: Date;

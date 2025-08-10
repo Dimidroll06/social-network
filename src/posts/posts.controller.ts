@@ -1,0 +1,90 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  ParseIntPipe,
+  UseGuards,
+  NotFoundException,
+  ForbiddenException,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { PostsService } from './posts.service';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { Post as PostEntity } from 'src/models/post.entity';
+
+@Controller('posts')
+export class PostsController {
+  constructor(private readonly postsService: PostsService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  @Post()
+  async create(
+    @CurrentUser() author: GetUserDto,
+    @Body() createPostDto: CreatePostDto,
+  ): Promise<PostEntity> {
+    return await this.postsService.create(author, createPostDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.postsService.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
+    const post = await this.postsService.findOne(id);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    return post;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  async update(
+    @CurrentUser() author: GetUserDto,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePostDto: UpdatePostDto,
+  ): Promise<PostEntity> {
+    const post = await this.postsService.findOne(id);
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    if (post.authorId !== author.id) {
+      throw new ForbiddenException('You are not allowed to edit this post');
+    }
+    return await this.postsService.update(id, updatePostDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  async remove(
+    @CurrentUser() author: GetUserDto,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<PostEntity> {
+    const post = await this.postsService.findOne(id);
+
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+
+    if (post.authorId !== author.id) {
+      throw new ForbiddenException('You are not allowed to delete this post');
+    }
+
+    return await this.postsService.remove(id);
+  }
+}
