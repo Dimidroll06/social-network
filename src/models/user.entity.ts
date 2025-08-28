@@ -1,3 +1,4 @@
+import { Like } from './like.entity';
 import { Post } from './post.entity';
 import {
   Entity,
@@ -24,6 +25,9 @@ export class User {
 
   @OneToMany<Post>(() => Post, (post) => post.author, { cascade: true })
   posts: Post[];
+
+  @OneToMany<Like>(() => Like, (like) => like.user, { cascade: true })
+  likes: Like[];
 
   @CreateDateColumn()
   createdAt: Date;
