@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './config/db.module';
 import { ApiModule } from './api/api.module';
 import { ClientModule } from './client/client.module';
+import { RouterModule } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -13,6 +14,13 @@ import { ClientModule } from './client/client.module';
     DatabaseModule,
     ApiModule,
     ClientModule,
+
+    RouterModule.register([
+      {
+        path: '/api',
+        module: ApiModule,
+      },
+    ]),
   ],
 })
 export class AppModule {}
