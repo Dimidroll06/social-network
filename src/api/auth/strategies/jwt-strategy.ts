@@ -3,8 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TokensPayload } from '../dto/tokens-payload';
-import { UsersService } from 'src/users/users.service';
-import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { UsersService } from 'src/api/users/users.service';
+import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

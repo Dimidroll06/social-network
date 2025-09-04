@@ -8,8 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { PaginationQueryDto } from 'src/dto/pagination-query.dto';
-import { PaginatedResult } from 'src/interfaces/paginated-result';
+import { PaginationQueryDto } from 'src/api/dto/pagination-query.dto';
+import { PaginatedResult } from 'src/api/interfaces/paginated-result';
 import { GetUserDto } from './dto/user-get-dto';
 
 @Controller('users')

@@ -1,8 +1,8 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { GetUserDto } from 'src/users/dto/user-get-dto';
-import { CreateUserDto } from 'src/users/dto/user-create.dto';
-import { UsersService } from 'src/users/users.service';
+import { GetUserDto } from 'src/api/users/dto/user-get-dto';
+import { CreateUserDto } from 'src/api/users/dto/user-create.dto';
+import { UsersService } from 'src/api/users/users.service';
 import { TokensInterface } from './dto/tokens-interface';
 import { TokensPayload } from './dto/tokens-payload';
 

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Post } from 'src/models/post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 

@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like } from 'src/models/like.entity';
 import { Post } from 'src/models/post.entity';
-import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 import { Repository } from 'typeorm';
 
 @Injectable()

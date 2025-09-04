@@ -7,8 +7,8 @@ import { GetUserDto } from './dto/user-get-dto';
 import { CreateUserDto } from './dto/user-create.dto';
 import { UpdateUserDto } from './dto/user-update.dto';
 import { Repository } from 'typeorm';
-import { PaginatedResult } from 'src/interfaces/paginated-result';
-import { PaginationQueryDto } from 'src/dto/pagination-query.dto';
+import { PaginatedResult } from 'src/api/interfaces/paginated-result';
+import { PaginationQueryDto } from 'src/api/dto/pagination-query.dto';
 
 @Injectable()
 export class UsersService {

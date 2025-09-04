@@ -4,9 +4,9 @@ import { Post } from 'src/models/post.entity';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
-import { LikesController } from 'src/likes/likes.controller';
-import { LikesService } from 'src/likes/likes.service';
+import { AuthModule } from 'src/api/auth/auth.module';
+import { LikesController } from 'src/api/likes/likes.controller';
+import { LikesService } from 'src/api/likes/likes.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Post, Like]), AuthModule],

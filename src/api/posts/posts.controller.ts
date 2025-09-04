@@ -13,12 +13,12 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { JwtAuthGuard } from 'src/api/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/api/auth/decorators/current-user.decorator';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 import { Post as PostEntity } from 'src/models/post.entity';
 
 @Controller('posts')

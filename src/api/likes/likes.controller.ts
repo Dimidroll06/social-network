@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { LikesService } from './likes.service';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
-import { GetUserDto } from 'src/users/dto/user-get-dto';
+import { JwtAuthGuard } from 'src/api/auth/guards/jwt-auth.guard';
+import { CurrentUser } from 'src/api/auth/decorators/current-user.decorator';
+import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 
 @Controller('posts/:postId/likes')
 export class LikesController {
