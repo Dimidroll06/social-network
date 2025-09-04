@@ -17,6 +17,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
     UsersService,
     LocalStrategy,
     JwtStrategy,
+    JwtAuthGuard,
     {
       provide: 'ACCESS_JWT_SERVICE',
       inject: [ConfigService],
