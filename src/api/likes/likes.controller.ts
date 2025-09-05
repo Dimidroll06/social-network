@@ -12,9 +12,18 @@ import { LikesService } from './likes.service';
 import { JwtAuthGuard } from 'src/api/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/api/auth/decorators/current-user.decorator';
 import { GetUserDto } from 'src/api/users/dto/user-get-dto';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { API_PREFIX } from 'src/config/const';
+import { Like } from 'src/models/like.entity';
 
-@Controller('posts/:postId/likes')
+@Controller(`${API_PREFIX}/posts/:postId/likes`)
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
 
@@ -22,7 +31,20 @@ export class LikesController {
   @HttpCode(HttpStatus.CREATED)
   @Post()
   @ApiOperation({ summary: 'Лайкнуть пост' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
+  @ApiOkResponse({
+    description: 'Лайк успешно поставлен',
+    type: Like,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Вы не авторизованы',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пост не найден',
+  })
+  @ApiConflictResponse({
+    description: 'Вы уже поставили лайк на этот пост',
+  })
   async like(
     @CurrentUser() user: GetUserDto,
     @Param('postId', ParseIntPipe) postId: number,
@@ -34,7 +56,20 @@ export class LikesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete()
   @ApiOperation({ summary: 'Убрать лайк с поста' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
+  @ApiOkResponse({
+    description: 'Лайк успешно убран',
+    type: Like,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Вы не авторизованы',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пост не найден',
+  })
+  @ApiNotFoundResponse({
+    description: 'Вы не поставили лайк на этот пост',
+  })
   async unlike(
     @CurrentUser() user: GetUserDto,
     @Param('postId', ParseIntPipe) postId: number,

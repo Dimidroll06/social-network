@@ -5,5 +5,6 @@ import { Module } from '@nestjs/common';
 
 @Module({
   imports: [UsersModule, AuthModule, PostsModule],
+  exports: [UsersModule, AuthModule, PostsModule],
 })
 export class ApiModule {}

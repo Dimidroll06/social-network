@@ -20,9 +20,16 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 import { Post as PostEntity } from 'src/models/post.entity';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { API_PREFIX } from 'src/config/const';
 
-@Controller('posts')
+@Controller(`${API_PREFIX}/posts`)
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
@@ -30,7 +37,14 @@ export class PostsController {
   @HttpCode(HttpStatus.CREATED)
   @Post()
   @ApiOperation({ summary: 'Создать пост' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
+  @ApiOkResponse({
+    description: 'Пост успешно создан',
+    type: PostEntity,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Вы не авторизованы',
+  })
   async create(
     @CurrentUser() author: GetUserDto,
     @Body() createPostDto: CreatePostDto,
@@ -46,6 +60,13 @@ export class PostsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Получить пост по id' })
+  @ApiOkResponse({
+    description: 'Пост успешно найден',
+    type: PostEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Пост не найден',
+  })
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
     const post = await this.postsService.findOne(id);
     if (!post) {
@@ -57,7 +78,14 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiOperation({ summary: 'Обновить пост' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
+  @ApiOkResponse({
+    description: 'Пост успешно обновлен',
+    type: PostEntity,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Вы не авторизованы',
+  })
   async update(
     @CurrentUser() author: GetUserDto,
     @Param('id', ParseIntPipe) id: number,
@@ -79,7 +107,17 @@ export class PostsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   @ApiOperation({ summary: 'Удалить пост' })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
+  @ApiOkResponse({
+    description: 'Пост успешно удален',
+    type: PostEntity,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Вы не авторизованы',
+  })
+  @ApiNotFoundResponse({
+    description: 'Пост не найден',
+  })
   async remove(
     @CurrentUser() author: GetUserDto,
     @Param('id', ParseIntPipe) id: number,

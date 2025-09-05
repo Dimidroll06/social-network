@@ -19,10 +19,29 @@ async function bootstrap() {
     .setTitle('Социальная сеть')
     .setDescription('Документация API')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        bearerFormat: 'JWT',
+        scheme: 'bearer',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'JWT',
+    )
+    .addCookieAuth('refreshToken', {
+      type: 'apiKey',
+      in: 'cookie',
+      name: 'refreshToken',
+    })
     .build();
+
   const documentFactory = () =>
     SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api', app, documentFactory);
+
+  SwaggerModule.setup('api', app, documentFactory, {
+    useGlobalPrefix: false,
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({

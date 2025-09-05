@@ -16,10 +16,21 @@ import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
 import type { RequestWithUser } from 'src/types/requset-with-user.type';
 import { CreateUserDto } from 'src/api/users/dto/user-create.dto';
-import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiCookieAuth,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { LoginRequestDto } from './dto/login-request.dto';
+import { API_PREFIX } from 'src/config/const';
+import { GetUserDto } from '../users/dto/user-get-dto';
 
-@Controller('auth')
+@Controller(`${API_PREFIX}/auth`)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -27,6 +38,15 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'Войти' })
   @ApiBody({ type: LoginRequestDto })
+  @ApiOkResponse({
+    description: 'Вход выполнен успешно',
+    type: () => ({
+      accessToken: { type: 'string' },
+    }),
+  })
+  @ApiForbiddenResponse({
+    description: 'Неверный логин или пароль',
+  })
   async login(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
@@ -49,6 +69,15 @@ export class AuthController {
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Зарегестрироваться' })
+  @ApiOkResponse({
+    description: 'Регистрация прошла успешно',
+    type: () => ({
+      message: { type: 'string' },
+    }),
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Неверный логин или пароль',
+  })
   async register(@Body() user: CreateUserDto) {
     await this.authService.register(user);
     return {
@@ -57,7 +86,17 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @ApiCookieAuth('refreshToken')
   @ApiOperation({ summary: 'Обновить access токен' })
+  @ApiOkResponse({
+    description: 'Токены обновлены',
+    type: () => ({
+      accessToken: { type: 'string' },
+    }),
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Токен не предоставлен или устарел',
+  })
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
@@ -84,8 +123,16 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('me')
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({ summary: 'Получить информацию о себе' })
+  @ApiOkResponse({
+    description: 'Информация о пользователе',
+    type: GetUserDto,
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Токен не предоставлен или устарел. Пожалуйста, войдите в систему снова',
+  })
   getProfile(@Req() req: RequestWithUser) {
     if (!req.user) {
       throw new UnauthorizedException(
@@ -98,8 +145,18 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('logout')
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({ summary: 'Выйти' })
+  @ApiOkResponse({
+    description: 'Выход выполнен успешно',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Токен не предоставлен или устарел. Пожалуйста, войдите в систему снова',
+  })
+  @ApiResponse({
+    status: 200,
+  })
   logout(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,

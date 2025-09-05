@@ -9,17 +9,29 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { PaginationQueryDto } from 'src/api/dto/pagination-query.dto';
-import { PaginatedResult } from 'src/api/interfaces/paginated-result';
+import {
+  PaginatedResult,
+  PaginatedResultDto,
+} from 'src/api/interfaces/paginated-result';
 import { GetUserDto } from './dto/user-get-dto';
-import { ApiOperation } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import { API_PREFIX } from 'src/config/const';
 
-@Controller('users')
+@Controller(`${API_PREFIX}/users`)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
   @HttpCode(200)
   @ApiOperation({ summary: 'Получить пользователей' })
+  @ApiOkResponse({
+    description: 'Список пользователей',
+    type: PaginatedResultDto<GetUserDto>,
+  })
   async getUsers(
     @Query() pagination: PaginationQueryDto,
   ): Promise<PaginatedResult<GetUserDto>> {
@@ -30,6 +42,13 @@ export class UsersController {
   @Get('/:userId')
   @HttpCode(200)
   @ApiOperation({ summary: 'Получить пользователя по ID' })
+  @ApiOkResponse({
+    description: 'Пользователь',
+    type: GetUserDto,
+  })
+  @ApiNotFoundResponse({
+    description: 'Пользователь не найден',
+  })
   async getUserById(
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<GetUserDto> {
