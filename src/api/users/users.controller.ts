@@ -11,6 +11,7 @@ import { UsersService } from './users.service';
 import { PaginationQueryDto } from 'src/api/dto/pagination-query.dto';
 import { PaginatedResult } from 'src/api/interfaces/paginated-result';
 import { GetUserDto } from './dto/user-get-dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -18,6 +19,7 @@ export class UsersController {
 
   @Get()
   @HttpCode(200)
+  @ApiOperation({ summary: 'Получить пользователей' })
   async getUsers(
     @Query() pagination: PaginationQueryDto,
   ): Promise<PaginatedResult<GetUserDto>> {
@@ -27,6 +29,7 @@ export class UsersController {
 
   @Get('/:userId')
   @HttpCode(200)
+  @ApiOperation({ summary: 'Получить пользователя по ID' })
   async getUserById(
     @Param('userId', ParseIntPipe) userId: number,
   ): Promise<GetUserDto> {

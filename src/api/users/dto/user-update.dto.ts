@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsAlphanumeric,
@@ -6,6 +7,10 @@ import {
 } from 'class-validator';
 
 export class UpdateUserDto {
+  @ApiProperty({
+    description: 'Имя пользователя',
+    example: 'Vanya228',
+  })
   @IsString()
   @IsAlphanumeric()
   @MinLength(3)

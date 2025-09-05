@@ -16,6 +16,8 @@ import { AuthGuard } from '@nestjs/passport';
 import type { Request, Response } from 'express';
 import type { RequestWithUser } from 'src/types/requset-with-user.type';
 import { CreateUserDto } from 'src/api/users/dto/user-create.dto';
+import { ApiBearerAuth, ApiBody, ApiOperation } from '@nestjs/swagger';
+import { LoginRequestDto } from './dto/login-request.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -23,6 +25,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
+  @ApiOperation({ summary: 'Войти' })
+  @ApiBody({ type: LoginRequestDto })
   async login(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,
@@ -44,6 +48,7 @@ export class AuthController {
 
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Зарегестрироваться' })
   async register(@Body() user: CreateUserDto) {
     await this.authService.register(user);
     return {
@@ -52,6 +57,7 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @ApiOperation({ summary: 'Обновить access токен' })
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
@@ -78,6 +84,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('me')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Получить информацию о себе' })
   getProfile(@Req() req: RequestWithUser) {
     if (!req.user) {
       throw new UnauthorizedException(
@@ -90,6 +98,8 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post('logout')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Выйти' })
   logout(
     @Req() req: RequestWithUser,
     @Res({ passthrough: true }) res: Response,

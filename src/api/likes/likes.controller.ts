@@ -12,6 +12,7 @@ import { LikesService } from './likes.service';
 import { JwtAuthGuard } from 'src/api/auth/guards/jwt-auth.guard';
 import { CurrentUser } from 'src/api/auth/decorators/current-user.decorator';
 import { GetUserDto } from 'src/api/users/dto/user-get-dto';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @Controller('posts/:postId/likes')
 export class LikesController {
@@ -20,6 +21,8 @@ export class LikesController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post()
+  @ApiOperation({ summary: 'Лайкнуть пост' })
+  @ApiBearerAuth()
   async like(
     @CurrentUser() user: GetUserDto,
     @Param('postId', ParseIntPipe) postId: number,
@@ -30,6 +33,8 @@ export class LikesController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete()
+  @ApiOperation({ summary: 'Убрать лайк с поста' })
+  @ApiBearerAuth()
   async unlike(
     @CurrentUser() user: GetUserDto,
     @Param('postId', ParseIntPipe) postId: number,

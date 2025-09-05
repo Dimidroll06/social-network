@@ -20,6 +20,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { GetUserDto } from 'src/api/users/dto/user-get-dto';
 import { Post as PostEntity } from 'src/models/post.entity';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 
 @Controller('posts')
 export class PostsController {
@@ -28,6 +29,8 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
   @Post()
+  @ApiOperation({ summary: 'Создать пост' })
+  @ApiBearerAuth()
   async create(
     @CurrentUser() author: GetUserDto,
     @Body() createPostDto: CreatePostDto,
@@ -36,11 +39,13 @@ export class PostsController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Получить все посты' })
   findAll() {
     return this.postsService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Получить пост по id' })
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<PostEntity> {
     const post = await this.postsService.findOne(id);
     if (!post) {
@@ -51,6 +56,8 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
+  @ApiOperation({ summary: 'Обновить пост' })
+  @ApiBearerAuth()
   async update(
     @CurrentUser() author: GetUserDto,
     @Param('id', ParseIntPipe) id: number,
@@ -71,6 +78,8 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
+  @ApiOperation({ summary: 'Удалить пост' })
+  @ApiBearerAuth()
   async remove(
     @CurrentUser() author: GetUserDto,
     @Param('id', ParseIntPipe) id: number,

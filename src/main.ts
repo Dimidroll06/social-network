@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 dotenv.config({ path: join(__dirname, '..', '.env') });
 
@@ -13,6 +14,15 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const cookieSecret = configService.get<string>('COOKIE_SECRET', 'secret');
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Социальная сеть')
+    .setDescription('Документация API')
+    .setVersion('1.0')
+    .build();
+  const documentFactory = () =>
+    SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, documentFactory);
 
   app.useGlobalPipes(
     new ValidationPipe({
