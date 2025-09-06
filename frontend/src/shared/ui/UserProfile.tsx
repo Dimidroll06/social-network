@@ -21,7 +21,7 @@ export const UserProfile = ({
       return (
         <div>
           <span
-            className={`${className} w-6 h-6 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
+            className={`${className} w-5 h-5 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
             onClick={onClick}
           >
             {user === null ? (
@@ -51,7 +51,7 @@ export const UserProfile = ({
       return (
         <div>
           <span
-            className={`${className} w-9 h-9 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
+            className={`${className} w-8 h-8 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
           >
             {user === null ? (
               <Loader className="m-2 text-blue-500" />
