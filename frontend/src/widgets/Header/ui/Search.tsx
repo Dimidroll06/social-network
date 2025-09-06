@@ -83,7 +83,7 @@ export const Search = ({
             placeholder="Поиск..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-48 md:w-64 px-4 py-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600 focus:text-gray-900"
+            className="w-48 md:w-64 px-4 py-2 h-10 pl-10 border-b border-b-gray-300 focus:outline-none focus:ring-0 text-gray-600 focus:text-gray-900"
           />
           <svg
             className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
@@ -110,10 +110,10 @@ export const Search = ({
               ref={mobileSearchRef}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-600 focus:text-gray-900"
+              className="w-full px-4 py-2 pl-10 h-10 border-b border-b-gray-300 focus:outline-none focus:ring-0 text-gray-600 focus:text-gray-900"
             />
             <svg
-              className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
+              className="absolute left-3 top-2.5 h-3 w-3 text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -132,7 +132,7 @@ export const Search = ({
       {/* Mobile Search */}
       {handleMobileSearch || (
         <button
-          className="block md:hidden relative w-8 h-8 border-0 bg-transparent cursor-pointer"
+          className="block md:hidden relative w-10 h-10 p-0.5 border-0 bg-transparent cursor-pointer"
           onClick={handleMobileSearchOpen}
         >
           <svg
