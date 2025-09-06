@@ -16,17 +16,6 @@ export const UserProfile = ({
 }: UserProfileProps) => {
   className = className || '';
 
-  if (user === null) {
-    return (
-      <span
-        className={`${className} w-9 h-9 p-1.5 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-400 font-semibold text-2xl select-none current`}
-        onClick={onClick}
-      >
-        <Loader />
-      </span>
-    );
-  }
-
   switch (size) {
     case 'small':
       return (
@@ -35,7 +24,11 @@ export const UserProfile = ({
             className={`${className} w-6 h-6 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
             onClick={onClick}
           >
-            {user.username.toUpperCase().charAt(0)}
+            {user === null ? (
+              <Loader className="m-1 text-blue-500" />
+            ) : (
+              user.username.toUpperCase().charAt(0)
+            )}
           </span>
         </div>
       );
@@ -46,7 +39,11 @@ export const UserProfile = ({
             className={`${className} w-12 h-12 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
             onClick={onClick}
           >
-            {user.username.toUpperCase().charAt(0)}
+            {user === null ? (
+              <Loader className="m-3 text-blue-500" />
+            ) : (
+              user.username.toUpperCase().charAt(0)
+            )}
           </span>
         </div>
       );
@@ -56,7 +53,11 @@ export const UserProfile = ({
           <span
             className={`${className} w-9 h-9 rounded-full flex justify-around border-gray-300 object-cover bg-blue-300 text-blue-950 font-semibold text-2xl select-none`}
           >
-            {user.username.toUpperCase().charAt(0)}
+            {user === null ? (
+              <Loader className="m-2 text-blue-500" />
+            ) : (
+              user.username.toUpperCase().charAt(0)
+            )}
           </span>
         </div>
       );
