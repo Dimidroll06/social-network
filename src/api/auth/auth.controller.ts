@@ -40,9 +40,14 @@ export class AuthController {
   @ApiBody({ type: LoginRequestDto })
   @ApiOkResponse({
     description: 'Вход выполнен успешно',
-    type: () => ({
-      accessToken: { type: 'string' },
-    }),
+    schema: {
+      properties: {
+        accessToken: {
+          type: 'string',
+          example: 'access.jwt.token',
+        },
+      },
+    },
   })
   @ApiForbiddenResponse({
     description: 'Неверный логин или пароль',
@@ -71,9 +76,14 @@ export class AuthController {
   @ApiOperation({ summary: 'Зарегестрироваться' })
   @ApiOkResponse({
     description: 'Регистрация прошла успешно',
-    type: () => ({
-      message: { type: 'string' },
-    }),
+    schema: {
+      properties: {
+        message: {
+          type: 'string',
+          example: 'User registered successfully. Please log in to continue.',
+        },
+      },
+    },
   })
   @ApiUnauthorizedResponse({
     description: 'Неверный логин или пароль',
@@ -90,9 +100,14 @@ export class AuthController {
   @ApiOperation({ summary: 'Обновить access токен' })
   @ApiOkResponse({
     description: 'Токены обновлены',
-    type: () => ({
-      accessToken: { type: 'string' },
-    }),
+    schema: {
+      properties: {
+        accessToken: {
+          type: 'string',
+          example: 'access.jwt.token',
+        },
+      },
+    },
   })
   @ApiUnauthorizedResponse({
     description: 'Токен не предоставлен или устарел',

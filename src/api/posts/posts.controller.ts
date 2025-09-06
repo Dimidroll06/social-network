@@ -28,6 +28,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { API_PREFIX } from 'src/config/const';
+import { GetPostDto } from './dto/get-post.dto';
 
 @Controller(`${API_PREFIX}/posts`)
 export class PostsController {
@@ -40,7 +41,7 @@ export class PostsController {
   @ApiBearerAuth('JWT')
   @ApiOkResponse({
     description: 'Пост успешно создан',
-    type: PostEntity,
+    type: GetPostDto,
   })
   @ApiUnauthorizedResponse({
     description: 'Вы не авторизованы',
@@ -62,7 +63,7 @@ export class PostsController {
   @ApiOperation({ summary: 'Получить пост по id' })
   @ApiOkResponse({
     description: 'Пост успешно найден',
-    type: PostEntity,
+    type: GetPostDto,
   })
   @ApiNotFoundResponse({
     description: 'Пост не найден',
@@ -81,7 +82,7 @@ export class PostsController {
   @ApiBearerAuth('JWT')
   @ApiOkResponse({
     description: 'Пост успешно обновлен',
-    type: PostEntity,
+    type: GetPostDto,
   })
   @ApiUnauthorizedResponse({
     description: 'Вы не авторизованы',
@@ -110,7 +111,7 @@ export class PostsController {
   @ApiBearerAuth('JWT')
   @ApiOkResponse({
     description: 'Пост успешно удален',
-    type: PostEntity,
+    type: GetPostDto,
   })
   @ApiUnauthorizedResponse({
     description: 'Вы не авторизованы',

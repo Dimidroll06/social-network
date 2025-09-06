@@ -21,7 +21,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { API_PREFIX } from 'src/config/const';
-import { Like } from 'src/models/like.entity';
+import { GetLikeDto } from './dto/get-like.dto';
 
 @Controller(`${API_PREFIX}/posts/:postId/likes`)
 export class LikesController {
@@ -34,7 +34,7 @@ export class LikesController {
   @ApiBearerAuth('JWT')
   @ApiOkResponse({
     description: 'Лайк успешно поставлен',
-    type: Like,
+    type: GetLikeDto,
   })
   @ApiUnauthorizedResponse({
     description: 'Вы не авторизованы',
@@ -59,7 +59,7 @@ export class LikesController {
   @ApiBearerAuth('JWT')
   @ApiOkResponse({
     description: 'Лайк успешно убран',
-    type: Like,
+    type: GetLikeDto,
   })
   @ApiUnauthorizedResponse({
     description: 'Вы не авторизованы',
