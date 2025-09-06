@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { createApi } from '@reduxjs/toolkit/query';
 
 export const $api = axios.create({
   baseURL: '/api',
@@ -99,10 +98,3 @@ export const baseQueryWithToken = async (req: RequestParams) => {
     };
   }
 };
-
-export const api = createApi({
-  reducerPath: 'api',
-  baseQuery: baseQueryWithToken,
-  endpoints: () => ({}),
-  tagTypes: [],
-});

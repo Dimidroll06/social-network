@@ -1,7 +1,13 @@
+import { useNavigate } from 'react-router-dom';
+
 export const Logo = () => {
+  const navigate = useNavigate();
   return (
-    <div className="flex items-center space-x-6">
+    <button
+      className="flex items-center space-x-6 select-none cursor-pointer"
+      onClick={() => navigate('/')}
+    >
       <div className="text-xl font-bold text-gray-800">PotatoNet</div>
-    </div>
+    </button>
   );
 };
