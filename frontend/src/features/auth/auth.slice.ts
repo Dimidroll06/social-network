@@ -1,7 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { RootState } from '../../app/store';
+import type { User } from '../../entities/user';
 
-const initialSliceState = {
+interface SliceState {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+const initialSliceState: SliceState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
@@ -29,10 +35,6 @@ const authSlice = createSlice({
     },
   },
 });
-
-export const getAuthState = (state: RootState) => state.auth.isAuthenticated;
-export const getAuthUser = (state: RootState) => state.auth.user;
-export const getAuthLoading = (state: RootState) => state.auth.isLoading;
 
 export const { setAuthenticated, setUser, setLoading, logout } =
   authSlice.actions;
