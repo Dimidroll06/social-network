@@ -26,7 +26,7 @@ export const Header = () => {
               type="outline"
               size="small"
               className="px-5"
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/auth')}
             >
               Войти
             </Button>
