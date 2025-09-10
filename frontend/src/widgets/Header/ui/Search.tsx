@@ -79,6 +79,7 @@ export const Search = ({
       <form onSubmit={handleSearch} className="hidden md:block">
         <div className="relative">
           <input
+            id="header-search"
             type="text"
             placeholder="Поиск..."
             value={searchQuery}
@@ -98,6 +99,10 @@ export const Search = ({
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
+          <label
+            className="absolute top-0 bottom-0 left-0 right-0 block cursor-text"
+            htmlFor="header-search"
+          />
         </div>
       </form>
 
@@ -105,6 +110,7 @@ export const Search = ({
         <form onSubmit={handleSearch} ref={searchRef} className="w-full">
           <div className="relative">
             <input
+              id="header-search-mobile"
               type="text"
               placeholder="Поиск..."
               ref={mobileSearchRef}
@@ -125,6 +131,10 @@ export const Search = ({
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
+            <label
+              className="absolute top-0 bottom-0 left-0 right-0 block cursor-text"
+              htmlFor="header-search-mobile"
+            />
           </div>
         </form>
       )}
