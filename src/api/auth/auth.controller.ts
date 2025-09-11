@@ -64,7 +64,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: `/${API_PREFIX}/auth/refresh`,
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
@@ -129,7 +129,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: `/${API_PREFIX}/auth/refresh`,
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 
@@ -180,7 +180,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: `/${API_PREFIX}/auth/refresh`,
     });
 
     req.logout((err) => {
