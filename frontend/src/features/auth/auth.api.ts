@@ -24,8 +24,8 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['Auth'],
     }),
-    register: builder.mutation<CreateUserDto, ServerMessage>({
-      query: (data) => ({
+    register: builder.mutation<ServerMessage, CreateUserDto>({
+      query: (data: CreateUserDto) => ({
         url: '/auth/register',
         method: 'POST',
         data,

@@ -3,6 +3,9 @@ import { FormField } from '../../shared/ui/FormField';
 import { RegisterSchema } from '../../schemas/authSchema';
 import { ValidationError } from 'yup';
 import Button from '../../shared/ui/Button';
+import { useRegisterMutation } from '../../features/auth/auth.api';
+import { Loader } from '../../shared/ui/Loader';
+import { isBaseQueryWithTokenError, isErrorWithMessage } from '../../app/api';
 
 interface FormErrors {
   email?: string;
@@ -33,8 +36,42 @@ export const RegisterForm = () => {
   };
 
   const [errors, setErrors] = useState<FormErrors>({} as FormErrors);
+  const [serverError, setServerError] = useState<string>('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  const handleRegister = async () => {
+    try {
+      await register({
+        email,
+        username,
+        password,
+      }).unwrap();
+      setServerError('');
+      setShowSuccess(true);
+    } catch (error) {
+      if (isErrorWithMessage(error)) {
+        return setServerError(error.message);
+      }
+
+      if (isBaseQueryWithTokenError(error)) {
+        if (typeof error.data === 'string') {
+          return setServerError(error.data);
+        }
+        if (isErrorWithMessage(error.data)) {
+          return setServerError(error.data.message);
+        }
+      }
+      setServerError('Произошла ошибка при регистрации. Попробуйте позже');
+      return console.error('Непредвиденная ошибка', error);
+    }
+  };
 
   useEffect(() => {
+    setShowSuccess(false);
+    setServerError('');
+
     try {
       RegisterSchema.validateSync(
         {
@@ -114,11 +151,40 @@ export const RegisterForm = () => {
         type="password"
         setValue={handlePasswordChange}
         autoComplete="password"
-        className="mb-7"
+        className="mb-5"
         error={errors?.password}
       />
-      <Button size="small" type="primary" className="w-full mb-5">
-        Зарегестрироваться
+      {serverError && (
+        <div className="text-sm mb-7 font-italic text-red-500">
+          {serverError}
+        </div>
+      )}
+      {showSuccess && (
+        <div className="text-sm mb-7 font-italic text-green-600">
+          Вы успешно зарегестрировались. Пожалуйста, войдите в систему
+        </div>
+      )}
+
+      <Button
+        size="small"
+        type="primary"
+        className="w-full mb-5"
+        disabled={
+          Object.keys(errors).length > 0 ||
+          isLoading ||
+          (!emailStarted && !usernameStarted && !passwordStarted)
+        }
+        onClick={() => {
+          if (Object.keys(errors).length === 0 && !isLoading) {
+            handleRegister();
+          }
+        }}
+      >
+        {isLoading ? (
+          <Loader className="w-2 h-2 left-0 right-0 m-auto" />
+        ) : (
+          'Зарегестрироваться'
+        )}
       </Button>
     </>
   );

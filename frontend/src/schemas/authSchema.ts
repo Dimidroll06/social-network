@@ -39,8 +39,13 @@ export const RegisterSchema: yup.ObjectSchema<IRegisterSchema> = yup
       )
       .test(
         'has-number-or-special',
-        'В пароле должен быть минимум одна цифра или спец символ',
-        (value: string) => /[\d\W]/.test(value || ''),
+        'В пароле должен быть минимум одна цифра',
+        (value: string) => /[\d]/.test(value || ''),
+      )
+      .test(
+        'has-special',
+        'В пароле должен быть минимум один спецсимвол',
+        (value: string) => /[\W]/.test(value || ''),
       ),
   })
   .defined();

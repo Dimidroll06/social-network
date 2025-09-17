@@ -15,6 +15,43 @@ type RequestParams = {
   formData?: boolean;
 };
 
+export interface SerializedError {
+  name?: string;
+  message?: string;
+  stack?: string;
+  code?: string;
+}
+
+export const isErrorWithMessage = (
+  error: unknown,
+): error is { message: string } => {
+  return (
+    typeof error === 'object' &&
+    error != null &&
+    'message' in error &&
+    typeof (error as any).message === 'string'
+  );
+};
+
+export interface BaseQueryWithTokenError {
+  status: number;
+  data: object | string;
+}
+
+export const isBaseQueryWithTokenError = (
+  error: unknown,
+): error is BaseQueryWithTokenError => {
+  return (
+    typeof error === 'object' &&
+    error != null &&
+    'status' in error &&
+    typeof (error as any).status === 'number' &&
+    'data' in error &&
+    (typeof (error as any).data === 'object' ||
+      typeof (error as any).data === 'string')
+  );
+};
+
 export const baseQueryWithToken = async (req: RequestParams) => {
   const { url, method, data, params } = req;
 
@@ -60,8 +97,8 @@ export const baseQueryWithToken = async (req: RequestParams) => {
             withCredentials: true,
           });
 
-          if (refreshRes.data?.token) {
-            const newToken = refreshRes.data.token;
+          if (refreshRes.data?.accessToken) {
+            const newToken = refreshRes.data.accessToken;
             localStorage.setItem('token', newToken);
 
             const retryRes = await $api({
