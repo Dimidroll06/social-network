@@ -2,6 +2,7 @@ import { UserProfile } from '../../../shared/ui/UserProfile';
 import type { User } from '../../../entities/user';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../../../features/auth/auth.api';
 
 type Props = {
   user: User | null;
@@ -13,15 +14,18 @@ export const ProfileMenu = ({ user }: Props) => {
   const navigate = useNavigate();
 
   const handleProfileMenuClick = () => {
-    setProfileMenuOpened(!profileMenuOpened);
+    if (!profileMenuOpened) setProfileMenuOpened(!profileMenuOpened);
   };
 
+  const [wantToLogout, setWantToLogout] = useState(false);
+  const [logout] = useLogoutMutation();
   const menuItems = [
     {
       id: 1,
       title: 'Профиль',
       onClick: () => {
         if (user) navigate(`/u/${user.id}`);
+        setProfileMenuOpened(false);
       },
     },
     {
@@ -29,16 +33,24 @@ export const ProfileMenu = ({ user }: Props) => {
       title: 'Настройки',
       onClick: () => {
         navigate('/settings');
-      },
-    },
-    {
-      id: 3,
-      title: 'Выход',
-      onClick: () => {
-        navigate('/logout');
+        setProfileMenuOpened(false);
       },
     },
   ];
+
+  const handleLogout = () => {
+    setWantToLogout(true);
+  };
+
+  const handleLogoutPermit = () => {
+    localStorage.removeItem('token');
+    logout()
+      .unwrap()
+      .then(() => {
+        setProfileMenuOpened(false);
+        setWantToLogout(false);
+      });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: Event) => {
@@ -47,11 +59,13 @@ export const ProfileMenu = ({ user }: Props) => {
         !profileMenuRef.current.contains(event.target as Node)
       ) {
         setProfileMenuOpened(false);
+        setWantToLogout(false);
       }
     };
 
     const handleResize = () => {
       setProfileMenuOpened(false);
+      setWantToLogout(false);
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -77,7 +91,7 @@ export const ProfileMenu = ({ user }: Props) => {
       <span className="pr-2 pt-1 pl-2 select-none ">⌵</span>
 
       {profileMenuOpened && (
-        <div className="absolute bottom-0 transform translate-y-full pt-6 right-0 md:right-1/2 md:translate-x-1/2 w-[70vw] md:w-50 z-50 cursor-auto">
+        <div className="absolute pointer-events-auto bottom-0 transform translate-y-full pt-6 right-0 md:right-1/2 md:translate-x-1/2 w-[70vw] md:w-50 z-50 cursor-auto">
           <div className="w-[70vw] md:w-50 border border-gray-200 backdrop-blur-md rounded-lg text-center">
             <div className="pt-4 pb-4 flex flex-col">
               <UserProfile
@@ -105,6 +119,21 @@ export const ProfileMenu = ({ user }: Props) => {
                   <span className="text-sm">{item.title}</span>
                 </div>
               ))}
+              {wantToLogout ? (
+                <div
+                  className="flex justify-center items-center py-4 md:py-2 transition-all duration-300 ease-in-out text-gray-600 hover:text-red-400 hover:bg-red-100 bg-opacity-20 cursor-pointer"
+                  onClick={handleLogoutPermit}
+                >
+                  <span className="text-sm">Подтвердить выход</span>
+                </div>
+              ) : (
+                <div
+                  className="flex justify-center items-center py-4 md:py-2 transition-all duration-300 ease-in-out text-gray-600 hover:text-blue-400 hover:bg-gray-100 bg-opacity-20 cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  <span className="text-sm">Выйти</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
