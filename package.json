@@ -21,6 +21,8 @@
     "start:user": "npm start --workspace=apps/user-service",
     "start:feed": "npm start --workspace=apps/feed-service",
     "start:frontend": "npm start --workspace=apps/frontend-service",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
     "build": "npm run build --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint .",
@@ -45,5 +47,11 @@
   "bugs": {
     "url": "https://github.com/Dimidroll06/social-network/issues"
   },
-  "homepage": "https://github.com/Dimidroll06/social-network#readme"
+  "homepage": "https://github.com/Dimidroll06/social-network#readme",
+  "allowScripts": {
+    "prisma@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "esbuild@0.28.2": true
+  }
 }

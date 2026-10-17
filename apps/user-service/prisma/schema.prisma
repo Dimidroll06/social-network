@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Public profile of a user. Managed by user-service.
+// userId is a flat id from auth-service (no cross-service relation).
+model UserInfo {
+  id          String   @id @default(uuid(7))
+  userId      String   @unique
+  nickname    String   @unique
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
