@@ -1,7 +1,10 @@
 import express from "express";
-import { rateLimit } from "express-rate-limit";
-import helmet from "helmet";
-import { errorHandler, notFoundHandler } from "@shared/common";
+import {
+  createRequestLogger,
+  createSecurityMiddleware,
+  errorHandler,
+  notFoundHandler,
+} from "@shared/common";
 import { router } from "./routes";
 
 export function createApp(): express.Express {
@@ -9,21 +12,14 @@ export function createApp(): express.Express {
 
   app.disable("x-powered-by");
 
-  // Security headers.
-  app.use(helmet());
+  // Request logging via morgan (configured in @shared/common).
+  app.use(createRequestLogger("user-service"));
+
+  // Helmet + rate limiting are configured in @shared/common.
+  app.use(createSecurityMiddleware());
 
   // Body parsing.
   app.use(express.json({ limit: "10kb" }));
-
-  // Basic rate limiting, applied to every request.
-  app.use(
-    rateLimit({
-      windowMs: 15 * 60 * 1000,
-      limit: 100,
-      standardHeaders: "draft-8",
-      legacyHeaders: false,
-    }),
-  );
 
   app.use("/api/user", router);
 

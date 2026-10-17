@@ -25,12 +25,12 @@ function resolveStatusCode(error: unknown): number {
  * must never respond from a catch block: throw or call next(error) instead.
  * Custom error classes will also live in @shared/common.
  */
-export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
+export const errorHandler: ErrorRequestHandler = (error, req, res, _next) => {
   const statusCode = resolveStatusCode(error);
   const isServerError = statusCode >= 500;
 
   if (isServerError) {
-    console.error("[unhandled-error]", error);
+    console.error(`[unhandled-error] ${req.method} ${req.originalUrl}`, error);
   }
 
   const body: ApiErrorBody = {
