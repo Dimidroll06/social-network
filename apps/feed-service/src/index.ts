@@ -1,7 +1,8 @@
 import { app } from "./app";
+import { config } from "./config";
 
-const port = Number(process.env.PORT ?? 4003);
-
-app.listen(port, () => {
-  console.log(`[feed-service] running at http://localhost:${port}`);
+app.listen(config.port, () => {
+  console.log(
+    `[${config.serviceName}] running at http://localhost:${config.port}`,
+  );
 });

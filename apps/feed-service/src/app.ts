@@ -5,6 +5,7 @@ import {
   errorHandler,
   notFoundHandler,
 } from "@shared/common";
+import { config } from "./config";
 import { router } from "./routes";
 
 export function createApp(): express.Express {
@@ -13,7 +14,7 @@ export function createApp(): express.Express {
   app.disable("x-powered-by");
 
   // Request logging via morgan (configured in @shared/common).
-  app.use(createRequestLogger("feed-service"));
+  app.use(createRequestLogger(config.serviceName));
 
   // Helmet + rate limiting are configured in @shared/common.
   app.use(createSecurityMiddleware());
