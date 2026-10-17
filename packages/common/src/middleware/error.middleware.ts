@@ -4,6 +4,8 @@ import type { ApiErrorBody } from "@shared/types";
 interface ErrorWithStatus {
   statusCode?: unknown;
   status?: unknown;
+  code?: unknown;
+  details?: unknown;
 }
 
 function resolveStatusCode(error: unknown): number {
@@ -23,7 +25,6 @@ function resolveStatusCode(error: unknown): number {
  *
  * Express 5 forwards rejected async handlers here automatically, so controllers
  * must never respond from a catch block: throw or call next(error) instead.
- * Custom error classes will also live in @shared/common.
  */
 export const errorHandler: ErrorRequestHandler = (error, req, res, _next) => {
   const statusCode = resolveStatusCode(error);
@@ -33,9 +34,16 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, _next) => {
     console.error(`[unhandled-error] ${req.method} ${req.originalUrl}`, error);
   }
 
+  const err = error as ErrorWithStatus & Error;
   const body: ApiErrorBody = {
     error: {
-      message: isServerError ? "Internal Server Error" : (error as Error).message,
+      message: isServerError ? "Internal Server Error" : err.message,
+      ...(isServerError
+        ? {}
+        : {
+            ...(typeof err.code === "string" ? { code: err.code } : {}),
+            ...(err.details !== undefined ? { details: err.details } : {}),
+          }),
     },
   };
 

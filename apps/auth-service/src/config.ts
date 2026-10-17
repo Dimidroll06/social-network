@@ -13,4 +13,19 @@ export const config = {
     user: process.env.USER_SERVICE_URL ?? "http://localhost:4002",
     feed: process.env.FEED_SERVICE_URL ?? "http://localhost:4003",
   },
+
+  jwt: {
+    accessSecret: process.env.JWT_ACCESS_SECRET ?? "dev-access-secret",
+    refreshSecret: process.env.JWT_REFRESH_SECRET ?? "dev-refresh-secret",
+    // Lifetimes in seconds.
+    accessTtlSeconds: Number(process.env.JWT_ACCESS_TTL_SECONDS ?? 15 * 60),
+    refreshTtlSeconds: Number(
+      process.env.JWT_REFRESH_TTL_SECONDS ?? 7 * 24 * 60 * 60,
+    ),
+  },
+
+  cookie: {
+    name: "refreshToken",
+    secure: process.env.NODE_ENV === "production",
+  },
 };
