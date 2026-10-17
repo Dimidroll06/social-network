@@ -1,0 +1,49 @@
+{
+  "name": "social-network",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Social network built as an npm workspaces monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others -n auth,user,feed,web -c blue,green,yellow,magenta \"npm:dev:auth\" \"npm:dev:user\" \"npm:dev:feed\" \"npm:dev:frontend\"",
+    "dev:backend": "concurrently --kill-others -n auth,user,feed -c blue,green,yellow \"npm:dev:auth\" \"npm:dev:user\" \"npm:dev:feed\"",
+    "dev:auth": "npm run dev --workspace=apps/auth-service",
+    "dev:user": "npm run dev --workspace=apps/user-service",
+    "dev:feed": "npm run dev --workspace=apps/feed-service",
+    "dev:frontend": "npm run dev --workspace=apps/frontend-service",
+    "start:auth": "npm start --workspace=apps/auth-service",
+    "start:user": "npm start --workspace=apps/user-service",
+    "start:feed": "npm start --workspace=apps/feed-service",
+    "start:frontend": "npm start --workspace=apps/frontend-service",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.7",
+    "globals": "^17.13.0",
+    "typescript-eslint": "^8.71.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dimidroll06/social-network.git"
+  },
+  "keywords": [],
+  "author": "Dimidroll06 <dima.shved.06@mail.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dimidroll06/social-network/issues"
+  },
+  "homepage": "https://github.com/Dimidroll06/social-network#readme"
+}
