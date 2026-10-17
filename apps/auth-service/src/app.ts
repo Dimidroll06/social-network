@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import {
   createRequestLogger,
   createSecurityMiddleware,
@@ -21,6 +22,7 @@ export function createApp(): express.Express {
 
   // Body parsing.
   app.use(express.json({ limit: "10kb" }));
+  app.use(cookieParser());
 
   app.use("/api/auth", router);
 

@@ -12,16 +12,22 @@
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "test": "node --import tsx --test src/services/token.service.test.ts src/services/auth.service.test.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "@shared/common": "^1.0.0",
     "@shared/types": "^1.0.0",
-    "express": "^5.3.0"
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.5",
     "prisma": "^6.19.3",
     "tsx": "^4.23.15",
