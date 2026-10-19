@@ -2,6 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import {
   createRequestLogger,
+  createCorsMiddleware,
   createSecurityMiddleware,
   errorHandler,
   notFoundHandler,
@@ -16,6 +17,7 @@ export function createApp(): express.Express {
 
   // Request logging via morgan (configured in @shared/common).
   app.use(createRequestLogger(config.serviceName));
+  app.use(createCorsMiddleware(config.corsOrigins));
 
   // Helmet + rate limiting are configured in @shared/common.
   app.use(createSecurityMiddleware());
