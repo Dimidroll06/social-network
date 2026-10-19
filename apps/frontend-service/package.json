@@ -14,7 +14,8 @@
   "dependencies": {
     "@shared/types": "^1.0.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "swagger-ui-dist": "^5.29.0"
   },
   "devDependencies": {
     "@types/react": "^19.3.0",
