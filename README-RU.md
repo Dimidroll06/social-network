@@ -11,6 +11,10 @@
 ![Express](https://img.shields.io/badge/Express-5-000000?style=for-the-badge&logo=express&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-6BA539?style=for-the-badge&logo=openapiinitiative&logoColor=white)
+![Swagger UI](https://img.shields.io/badge/Swagger_UI-документация-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
 ![Status](https://img.shields.io/badge/status-in%20development-orange?style=for-the-badge)
 
 </div>
@@ -59,6 +63,27 @@ cd social-network
 npm install
 ```
 
+### Локальный запуск через Docker
+
+Скопируйте пример переменных окружения и замените development-секреты на свои значения:
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+После запуска доступны:
+
+- приложение: http://localhost:5173;
+- Swagger UI: http://localhost:5173/swagger/;
+- OpenAPI JSON: http://localhost:5173/swagger/openapi.json.
+
+Остановить контейнеры можно командой:
+
+```bash
+docker compose down
+```
+
 Запуск всего сразу (сервисы и клиент параллельно):
 
 ```bash
@@ -83,6 +108,14 @@ npm run dev:frontend     # только React-клиент
 | user-service | 4002 | http://localhost:4002/api/user/health |
 | feed-service | 4003 | http://localhost:4003/api/feed/health |
 | frontend-service | 5173 | http://localhost:5173 |
+
+Все browser-запросы к API проходят через frontend nginx по префиксам `/api/auth`, `/api/user` и `/api/feed`.
+
+## Swagger UI
+
+Документация API доступна через nginx по адресу [http://localhost:5173/swagger/](http://localhost:5173/swagger/).
+
+![Swagger UI](./public/swagger.png)
 
 ---
 
@@ -118,7 +151,9 @@ social-network/
 │       └── src/                   # клиентское приложение
 ├── packages/
 │   ├── common/                    # переиспользуемый код для всех микросервисов
+│   ├── openapi/                   # единая OpenAPI-спецификация
 │   └── types/                     # общие типы приложения
+├── public/                        # изображения и прочие материалы проекта
 ├── eslint.config.mjs              # единый ESLint
 ├── tsconfig.base.json             # общий tsconfig
 ├── package.json                   # workspaces и скрипты
