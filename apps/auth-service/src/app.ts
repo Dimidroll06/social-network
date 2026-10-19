@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import { openapiDocument } from "@shared/openapi";
 import {
   createRequestLogger,
   createCorsMiddleware,
@@ -25,6 +26,10 @@ export function createApp(): express.Express {
   // Body parsing.
   app.use(express.json({ limit: "10kb" }));
   app.use(cookieParser());
+
+  app.get("/openapi.json", (_req, res) => {
+    res.json(openapiDocument);
+  });
 
   app.use("/api/auth", router);
 
