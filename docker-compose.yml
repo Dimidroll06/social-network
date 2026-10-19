@@ -136,9 +136,9 @@ services:
       context: .
       dockerfile: apps/frontend-service/Dockerfile
       args:
-        VITE_AUTH_SERVICE_URL: ${VITE_AUTH_SERVICE_URL:-http://localhost:4001}
-        VITE_USER_SERVICE_URL: ${VITE_USER_SERVICE_URL:-http://localhost:4002}
-        VITE_FEED_SERVICE_URL: ${VITE_FEED_SERVICE_URL:-http://localhost:4003}
+        VITE_AUTH_SERVICE_URL: /api/auth
+        VITE_USER_SERVICE_URL: /api/user
+        VITE_FEED_SERVICE_URL: /api/feed
     ports:
       - "${FRONTEND_PORT:-5173}:8080"
     depends_on:

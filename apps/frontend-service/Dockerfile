@@ -7,9 +7,9 @@ COPY apps ./apps
 COPY packages ./packages
 RUN npm ci --no-audit --no-fund
 
-ARG VITE_AUTH_SERVICE_URL=http://localhost:4001
-ARG VITE_USER_SERVICE_URL=http://localhost:4002
-ARG VITE_FEED_SERVICE_URL=http://localhost:4003
+ARG VITE_AUTH_SERVICE_URL=/api/auth
+ARG VITE_USER_SERVICE_URL=/api/user
+ARG VITE_FEED_SERVICE_URL=/api/feed
 ENV VITE_AUTH_SERVICE_URL=$VITE_AUTH_SERVICE_URL
 ENV VITE_USER_SERVICE_URL=$VITE_USER_SERVICE_URL
 ENV VITE_FEED_SERVICE_URL=$VITE_FEED_SERVICE_URL
@@ -19,6 +19,7 @@ RUN npm run build --workspace=frontend-service
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 
 COPY apps/frontend-service/nginx.conf /etc/nginx/conf.d/default.conf
+COPY apps/frontend-service/proxy_params /etc/nginx/proxy_params
 COPY --from=build /app/apps/frontend-service/dist /usr/share/nginx/html
 
 EXPOSE 8080
