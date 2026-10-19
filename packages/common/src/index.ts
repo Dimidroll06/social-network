@@ -6,6 +6,7 @@
 export { errorHandler } from "./middleware/error.middleware";
 export { notFoundHandler } from "./middleware/not-found.middleware";
 export { createRequestLogger } from "./middleware/request-logger.middleware";
+export { createCorsMiddleware } from "./middleware/cors.middleware";
 export { createSecurityMiddleware } from "./middleware/security.middleware";
 export type { SecurityMiddlewareOptions } from "./middleware/security.middleware";
 export {

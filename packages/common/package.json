@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@shared/types": "^1.0.0",
+    "cors": "^2.8.5",
     "express-rate-limit": "^8.7.1",
     "helmet": "^8.3.0",
     "morgan": "^1.12.1",
@@ -26,6 +27,7 @@
     "express": "^5.3.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^26.6.5",
