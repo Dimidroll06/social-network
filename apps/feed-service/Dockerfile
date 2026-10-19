@@ -19,7 +19,6 @@ COPY packages ./packages
 RUN npx prisma generate --schema apps/feed-service/prisma/schema.prisma \
   && chown -R app:app /app
 
-USER app
+USER 10001:10001
 EXPOSE 4003
 CMD ["node_modules/.bin/tsx", "apps/feed-service/src/index.ts"]
-

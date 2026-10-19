@@ -19,7 +19,6 @@ COPY packages ./packages
 RUN npx prisma generate --schema apps/auth-service/prisma/schema.prisma \
   && chown -R app:app /app
 
-USER app
+USER 10001:10001
 EXPOSE 4001
 CMD ["node_modules/.bin/tsx", "apps/auth-service/src/index.ts"]
-
