@@ -1,0 +1,40 @@
+services:
+  posts-db:
+    image: postgres:19.0-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTS_DB_USER}
+      - POSTGRES_PASSWORD=${POSTS_DB_PASSWORD}
+      - POSTGRES_DB=posts
+    volumes:
+      - posts-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d posts"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - backend
+  users-db:
+    image: postgres:19.0-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${USERS_DB_USER}
+      - POSTGRES_PASSWORD=${USERS_DB_PASSWORD}
+      - POSTGRES_DB=users
+    volumes:
+      - users-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d users"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - backend
+volumes:
+  users-data:
+    driver: local
+  posts-data:
+    driver: local

@@ -1,0 +1,5 @@
+include:
+  - path: deploy/compose/networks.yaml
+  - path: deploy/compose/infra.yaml
+  - path: deploy/compose/backend.yaml
+  - path: deploy/compose/frontend.yaml

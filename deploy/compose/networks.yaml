@@ -1,0 +1,5 @@
+networks:
+  backend:
+    internal: true
+  frontend:
+    driver: bridge

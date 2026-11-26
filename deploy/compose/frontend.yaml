@@ -1,0 +1,14 @@
+services:
+  web:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.vite
+      args:
+        - VITE_API_GATEWAY_URL=${VITE_API_GATEWAY_URL:-/api}
+    restart: unless-stopped
+    depends_on:
+      - api-gateway
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    networks:
+      - frontend

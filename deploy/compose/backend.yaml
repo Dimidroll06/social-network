@@ -1,0 +1,47 @@
+services:
+  users-service:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.nest
+      args:
+        - SERVICE_NAME=users-service
+    restart: unless-stopped
+    depends_on:
+      users-db:
+        condition: service_healthy
+    environment:
+      DB_HOST: users-db
+      DB_PORT: 5432
+      DB_USER: ${USERS_DB_USER}
+      DB_PASSWORD: ${USERS_DB_PASSWORD}
+      DB_NAME: users
+    networks:
+      - backend
+  posts-service:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.nest
+      args:
+        - SERVICE_NAME=posts-service
+    depends_on:
+      posts-db:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      DB_HOST: posts-db
+      DB_PORT: 5432
+      DB_USER: ${POSTS_DB_USER}
+      DB_PASSWORD: ${POSTS_DB_PASSWORD}
+      DB_NAME: posts
+    networks:
+      - backend
+  api-gateway:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.nest
+      args:
+        - SERVICE_NAME=api-gateway
+    restart: unless-stopped
+    networks:
+      - backend
+      - frontend
