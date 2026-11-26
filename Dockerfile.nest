@@ -1,11 +1,11 @@
 FROM node:26-alpine as base
 ENV PNPM_HOME="/pnpm"
-ENV PATH="${PNPM_HOME}:${PATH}"
-RUN corepack enable
+ENV PATH="${PNPM_HOME}/bin:${PNPM_HOME}:${PATH}"
+RUN npm install -g pnpm@12.23.0
 
 FROM base AS pruner
 WORKDIR /app
-RUN pnpm add -g turbo
+RUN pnpm add -g turbo@2.11.13
 COPY . .
 ARG SERVICE_NAME
 RUN turbo prune ${SERVICE_NAME} --docker
@@ -18,11 +18,8 @@ RUN pnpm install --frozen-lockfile
 
 COPY --from=pruner /app/out/full .
 ARG SERVICE_NAME
-RUN pnpm turbo run build --filter=${SERVICE_NAME}...
-
-COPY --from=pruner /app/out/full/ .
-ARG SERVICE_NAME
-RUN pnpm turbo run build --filter=${SERVICE_NAME}...
+RUN pnpm turbo run build --filter=${SERVICE_NAME}... \
+    pnpm prune --prod
 
 FROM node:26-alpine AS runner
 WORKDIR /app
@@ -39,4 +36,3 @@ USER 1000:1000
 
 WORKDIR /app/apps/${SERVICE_NAME}
 ENTRYPOINT [ "node", "dist/main.js" ]
-CMD []
