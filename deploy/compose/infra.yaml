@@ -16,6 +16,21 @@ services:
       start_period: 15s
     networks:
       - backend
+  posts-migrate:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.nest
+      target: migrator
+      args:
+        - SERVICE_NAME=posts-service
+    restart: "no"
+    depends_on:
+      posts-db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTS_DB_USER}:${POSTS_DB_PASSWORD}@posts-db:5432/posts
+    networks:
+      - backend
   users-db:
     image: postgres:19.0-alpine
     restart: unless-stopped
@@ -31,6 +46,21 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
+    networks:
+      - backend
+  users-migrate:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.nest
+      target: migrator
+      args:
+        - SERVICE_NAME=users-service
+    restart: "no"
+    depends_on:
+      users-db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${USERS_DB_USER}:${USERS_DB_PASSWORD}@users-db:5432/users
     networks:
       - backend
   rabbitmq:

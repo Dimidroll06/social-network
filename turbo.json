@@ -1,9 +1,15 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
+    "db:generate": {
+      "outputs": [
+        "src/generated/**"
+      ]
+    },
     "build": {
       "dependsOn": [
-        "^build"
+        "^build",
+        "db:generate"
       ],
       "outputs": [
         "dist/**"
@@ -14,12 +20,14 @@
     },
     "check-types": {
       "dependsOn": [
-        "^check-types"
+        "^check-types",
+        "db:generate"
       ]
     },
     "lint": {
       "dependsOn": [
-        "^lint"
+        "^lint",
+        "db:generate"
       ]
     },
     "dev": {

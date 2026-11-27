@@ -20,3 +20,10 @@ export interface ServicePingResponse {
   status: 'ok';
   timestamp: string;
 }
+
+export interface ServiceReadinessResponse {
+  service: string;
+  status: 'ok' | 'error';
+  database: 'ok' | 'error';
+  timestamp: string;
+}

@@ -9,14 +9,12 @@ services:
     depends_on:
       users-db:
         condition: service_healthy
+      users-migrate:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
     environment:
-      DB_HOST: users-db
-      DB_PORT: 5432
-      DB_USER: ${USERS_DB_USER}
-      DB_PASSWORD: ${USERS_DB_PASSWORD}
-      DB_NAME: users
+      DATABASE_URL: postgresql://${USERS_DB_USER}:${USERS_DB_PASSWORD}@users-db:5432/users
       RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
     networks:
       - backend
@@ -29,15 +27,13 @@ services:
     depends_on:
       posts-db:
         condition: service_healthy
+      posts-migrate:
+        condition: service_completed_successfully
       rabbitmq:
         condition: service_healthy
     restart: unless-stopped
     environment:
-      DB_HOST: posts-db
-      DB_PORT: 5432
-      DB_USER: ${POSTS_DB_USER}
-      DB_PASSWORD: ${POSTS_DB_PASSWORD}
-      DB_NAME: posts
+      DATABASE_URL: postgresql://${POSTS_DB_USER}:${POSTS_DB_PASSWORD}@posts-db:5432/posts
       RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
     networks:
       - backend

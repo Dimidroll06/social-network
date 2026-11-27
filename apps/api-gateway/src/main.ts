@@ -9,7 +9,7 @@ const RABBITMQ_URL =
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // HTTP остаётся для фронтенда, RabbitMQ — для общения с микросервисами.
+  // HTTP stays for the frontend; RabbitMQ is used to talk to microservices.
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
