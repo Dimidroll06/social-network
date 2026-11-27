@@ -3,3 +3,5 @@ packages:
   - 'packages/*'
 allowBuilds:
   '@parcel/watcher': true
+minimumReleaseAgeExclude:
+  - '@nestjs/microservices@12.6.3'

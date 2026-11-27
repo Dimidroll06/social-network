@@ -1,0 +1,19 @@
+{
+  "name": "@social-network/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Общие сообщения и интерфейсы сервисов social-network",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check-types": "tsc --noEmit",
+    "dev": "tsc -p tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2"
+  }
+}

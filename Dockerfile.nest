@@ -18,7 +18,7 @@ RUN pnpm install --frozen-lockfile
 
 COPY --from=pruner /app/out/full .
 ARG SERVICE_NAME
-RUN pnpm turbo run build --filter=${SERVICE_NAME}... \
+RUN pnpm turbo run build --filter=${SERVICE_NAME}... && \
     pnpm prune --prod
 
 FROM node:26-alpine AS runner
@@ -28,6 +28,7 @@ ENV NODE_ENV=production
 ARG SERVICE_NAME
 # 1000 - node user/group in node-alpine image
 COPY --from=installer --chown=1000:1000 /app/node_modules ./node_modules
+COPY --from=installer --chown=1000:1000 /app/packages ./packages
 COPY --from=installer --chown=1000:1000 /app/apps/${SERVICE_NAME}/node_modules ./apps/${SERVICE_NAME}/node_modules
 COPY --from=installer --chown=1000:1000 /app/apps/${SERVICE_NAME}/dist ./apps/${SERVICE_NAME}/dist
 COPY --from=installer --chown=1000:1000 /app/apps/${SERVICE_NAME}/package.json ./apps/${SERVICE_NAME}/package.json
